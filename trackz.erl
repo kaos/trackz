@@ -40,8 +40,12 @@
 %%--------------------------------------------------------------------
 init(Context) ->
     z_datamodel:manage(?MODULE,
-		       #datamodel{ categories = [{project, undefined, [{title, <<"Project">>}]}],
-				   predicates = [{project_member, [{title, <<"Project Member">>}], [{project, person}]}]
+		       #datamodel{ categories = [{project, undefined, [{title, <<"Project">>}]},
+						 {column, undefined, [{title, <<"Column">>}]}
+						],
+				   predicates = [{project_member, [{title, <<"Project Member">>}], [{project, person}]},
+						 {project_column, [{title, <<"Project Column">>}], [{project, column}]}
+						]
 				 },
 		       Context
 		      ),

@@ -18,7 +18,7 @@ Your Projects:
 
 <p>
 {% for p in id.s.project_member %}
-    {{ p.title }}<br />
+    <a href="{% url page id=p %}">{{ p.title }}</a><br />
 {% empty %}
     You are not a member of any projects.
 {% endfor %}
