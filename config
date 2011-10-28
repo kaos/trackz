@@ -1,0 +1,9 @@
+%% -*- erlang -*-
+
+[{enabled, true},
+ {host, trackz},
+ {hostname, "trackz.local:8000"},
+ {dbdatabase, "zotonic"},
+ {dbschema, "trackz"},
+ {admin_password, "trackz"}
+].
