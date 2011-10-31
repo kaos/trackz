@@ -1,4 +1,13 @@
-{% wire id=#form type="submit" postback={create_project} delegate="trackz" acction={dialog_close} %}
+{% wire 
+   id=#form 
+   type="submit" 
+   postback={create_project 
+      action={growl text="Created new project" } 
+      action={insert_bottom target=target template="_project_list_entry.tpl" id=id }
+   } 
+   delegate="trackz" 
+   action={dialog_close} 
+%}
 <form id="{{ #form }}" method="post" action="postback"> 
   <div class="form-item">
     <label for="title">{_ Project Title _}</label>

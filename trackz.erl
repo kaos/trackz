@@ -56,7 +56,7 @@ init(Context) ->
 
 			
 %%--------------------------------------------------------------------
-event({submit, {create_project, _}, _, _}, Context) ->
+event({submit, {create_project, Args}, _, _}, Context) ->
     Title = z_context:get_q_validated("title", Context),
     case m_rsc:insert(
            [
@@ -66,7 +66,13 @@ event({submit, {create_project, _}, _, _}, Context) ->
            Context) 
     of
         {ok, Id} ->
-            z_render:wire({redirect, [{id, Id}]}, Context);
+            m_edge:insert(Id, project_member, z_acl:user(Context), Context),
+            z_render:wire(
+              [
+               {Action, [{id, Id}|ActionArgs]} 
+               || {Action, ActionArgs} <- proplists:get_all_values(action, Args)
+              ],
+              Context);
         Error ->
             z_render:growl_error(io_lib:format("Create Project failed~n~p", [Error]), Context)
     end.

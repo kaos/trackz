@@ -14,19 +14,21 @@
     Is me: {{ id.is_me }}<br />
     
     {% if id.is_me %}
-      {% button text=_"Create a new Project" action={dialog_open title=_"Project Title" template="_dialog_create_project.tpl"} %}
+      {% button text=_"Create a new Project" 
+         action={dialog_open title=_"Project Title" template="_dialog_create_project.tpl" target="projects"} 
+      %}
     {% endif %}
     <br />
   </p>  
 
   <p>
     <h2>Your Projects</h2>
-    <p>
+    <ul id="projects">
       {% for p in id.s.project_member %}
-        <a href="{% url page id=p %}">{{ p.title }}</a><br />
+        {% include "_project_list_entry.tpl" id=p %}
         {% empty %}
         You are not a member of any projects.
       {% endfor %}
-    </p>
+    </ul>
   </p>   
 {% endblock %}
