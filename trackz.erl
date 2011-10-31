@@ -30,7 +30,10 @@
 
 
 %% API
--export([init/1]).
+-export([
+         init/1,
+         event/2
+        ]).
 
 
 %%====================================================================
@@ -52,6 +55,21 @@ init(Context) ->
     ok.
 
 			
+%%--------------------------------------------------------------------
+event({submit, {create_project, _}, _, _}, Context) ->
+    Title = z_context:get_q_validated("title", Context),
+    case m_rsc:insert(
+           [
+            {title, Title}, 
+            {category_id, m_category:name_to_id_check(project, Context)}
+           ], 
+           Context) 
+    of
+        {ok, Id} ->
+            z_render:wire({redirect, [{id, Id}]}, Context);
+        Error ->
+            z_render:growl_error(io_lib:format("Create Project failed~n~p", [Error]), Context)
+    end.
 
 
 %%====================================================================
