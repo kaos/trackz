@@ -2,8 +2,8 @@
    id=#form 
    type="submit" 
    postback={create_project 
-      action={growl text="Created new project" } 
-      action={insert_bottom target=target template="_project_list_entry.tpl" id=id }
+      action={dialog_open template="_project_created.tpl" }
+      action={insert_bottom target=target template="_project_list_entry.tpl" }
    } 
    delegate="trackz" 
    action={dialog_close} 
