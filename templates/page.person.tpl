@@ -15,7 +15,7 @@
     
     {% if id.is_me %}
       {% button text=_"Create a new Project" 
-         action={dialog_open title=_"Project Title" template="_dialog_create_project.tpl" target="projects"} 
+         action={dialog_open title=_"Create Project" template="_dialog_create_project.tpl" target="projects"} 
       %}
     {% endif %}
     <br />
