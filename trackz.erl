@@ -44,10 +44,12 @@
 init(Context) ->
     z_datamodel:manage(?MODULE,
 		       #datamodel{ categories = [{project, undefined, [{title, <<"Project">>}]},
-						 {column, undefined, [{title, <<"Column">>}]}
+						 {column, undefined, [{title, <<"Column">>}]},
+                                                 {card, undefined, [{title, <<"Card">>}]}
 						],
 				   predicates = [{project_member, [{title, <<"Project Member">>}], [{project, person}]},
-						 {project_column, [{title, <<"Project Column">>}], [{project, column}]}
+						 {project_column, [{title, <<"Project Column">>}], [{project, column}]},
+						 {card_column, [{title, <<"Card Column">>}], [{card, column}]}
 						]
 				 },
 		       Context
@@ -75,6 +77,26 @@ event({submit, {create_project, Args}, _, _}, Context) ->
               Context);
         Error ->
             z_render:growl_error(io_lib:format("Create Project failed~n~p", [Error]), Context)
+    end;
+event({submit, {add_card, Args}, _, _}, Context) ->
+    Title = z_context:get_q_validated("title", Context),
+    case m_rsc:insert(
+           [
+            {title, Title}, 
+            {category_id, m_category:name_to_id_check(card, Context)}
+           ],
+           Context) 
+    of
+        {ok, Id} ->
+            {ok, _} = m_edge:insert(Id, card_column, z_context:get_q("column", Context), Context),
+            z_render:wire(
+              [
+               {Action, [{id, Id}|ActionArgs]} 
+               || {Action, ActionArgs} <- proplists:get_all_values(action, Args)
+              ],
+              Context);
+        Error ->
+            z_render:growl_error(io_lib:format("Add card failed~n~p", [Error]), Context)
     end.
 
 

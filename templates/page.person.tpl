@@ -9,7 +9,7 @@
   </p>
   
   {{ id.body|show_media }}
-  
+
   <p>
     Is me: {{ id.is_me }}<br />
     

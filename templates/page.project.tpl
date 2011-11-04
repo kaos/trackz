@@ -13,9 +13,7 @@
 <p>
 <div class="columns">
 {% for col in id.o.project_column %}
-    <div class="column zp-25">
-        <span class="title">{{ col.title }}</span>
-    </div>
+   {% include "_project_column.tpl" project=id id=col %}
 {% endfor %}
 </div>
 

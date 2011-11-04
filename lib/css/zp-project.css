@@ -3,3 +3,13 @@
 .zp-wrapper {
     display: block;
 }
+
+.column {
+    display: inline-block;
+    width: 15em;
+    margin-right: .5em;
+}
+
+.column .ui-widget-content {
+    min-height: 25em;
+}
