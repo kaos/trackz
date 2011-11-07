@@ -1,4 +1,8 @@
 
+.zp-wrapper {
+    width: 90%;
+}
+
 .clearfix, 
 .zp-wrapper {
     display: block;
@@ -6,10 +10,36 @@
 
 .column {
     display: inline-block;
-    width: 15em;
-    margin-right: .5em;
+    width: 25em;
+    margin: .25em;
 }
 
-.column .ui-widget-content {
+.column > .ui-widget-content {
     min-height: 25em;
+}
+
+.card {
+    margin: .25em;
+}
+
+.card-icon {
+    display: inline-block;
+    cursor: move;
+}
+
+small {
+    font-size: 0.875em;
+}
+
+.card > .ui-widget-content {
+    padding: .25em;
+    padding-left: .5em;
+}
+
+hr {
+    margin-bottom: .25em;
+}
+
+a.card-title {
+    text-decoration: none;
 }

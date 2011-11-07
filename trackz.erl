@@ -49,7 +49,7 @@ init(Context) ->
 						],
 				   predicates = [{project_member, [{title, <<"Project Member">>}], [{project, person}]},
 						 {project_column, [{title, <<"Project Column">>}], [{project, column}]},
-						 {card_column, [{title, <<"Card Column">>}], [{card, column}]}
+						 {column_card, [{title, <<"Column Card">>}], [{column, card}]}
 						]
 				 },
 		       Context
@@ -58,6 +58,11 @@ init(Context) ->
 
 			
 %%--------------------------------------------------------------------
+event({sort, Sorted, #dragdrop{ tag={card_sorter, Props}}}, Context) ->
+    ColumnId = proplists:get_value(id, Props),
+    CardIds = [ CardId || #dragdrop{ tag=CardId } <- Sorted ],
+    ok = m_edge:set_sequence(ColumnId, column_card, CardIds, Context),
+    Context;
 event({submit, {create_project, Args}, _, _}, Context) ->
     Title = z_context:get_q_validated("title", Context),
     case m_rsc:insert(
@@ -88,7 +93,7 @@ event({submit, {add_card, Args}, _, _}, Context) ->
            Context) 
     of
         {ok, Id} ->
-            {ok, _} = m_edge:insert(Id, card_column, z_context:get_q("column", Context), Context),
+            {ok, _} = m_edge:insert(z_context:get_q("column", Context), column_card, Id, Context),
             z_render:wire(
               [
                {Action, [{id, Id}|ActionArgs]} 

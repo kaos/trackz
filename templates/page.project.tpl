@@ -13,7 +13,12 @@
 <p>
 <div class="columns">
 {% for col in id.o.project_column %}
-   {% include "_project_column.tpl" project=id id=col %}
+   {% include "_project_column.tpl" 
+              project=id 
+              id=col 
+              first_col=forloop.first
+              last_col=forloop.last
+   %}
 {% endfor %}
 </div>
 
