@@ -49,7 +49,8 @@ init(Context) ->
 						],
 				   predicates = [{project_member, [{title, <<"Project Member">>}], [{project, person}]},
 						 {project_column, [{title, <<"Project Column">>}], [{project, column}]},
-						 {column_card, [{title, <<"Column Card">>}], [{column, card}]}
+						 {column_card, [{title, <<"Column Card">>}], [{column, card}]},
+                                                 {card_project, [{title, <<"Card Project">>}], [{card, project}]}
 						]
 				 },
 		       Context
@@ -62,6 +63,13 @@ event({sort, Sorted, #dragdrop{ tag={card_sorter, Props}}}, Context) ->
     ColumnId = proplists:get_value(id, Props),
     CardIds = [ CardId || #dragdrop{ tag=CardId } <- Sorted ],
     ok = m_edge:set_sequence(ColumnId, column_card, CardIds, Context),
+    mod_signal:emit({card_changed, 
+                     [{event, sorted},
+                      {cards, CardIds},
+                      {column, ColumnId},
+                      {project, proplists:get_value(project, Props)}
+                     ]},
+                    Context),
     Context;
 event({submit, {create_project, Args}, _, _}, Context) ->
     Title = z_context:get_q_validated("title", Context),
@@ -93,7 +101,17 @@ event({submit, {add_card, Args}, _, _}, Context) ->
            Context) 
     of
         {ok, Id} ->
-            {ok, _} = m_edge:insert(z_context:get_q("column", Context), column_card, Id, Context),
+            ProjId = z_convert:to_integer(z_context:get_q("project", Context)),
+            {ok, _} = m_edge:insert(Id, card_project, ProjId, Context),
+            ColumnId = z_convert:to_integer(z_context:get_q("column", Context)),
+            {ok, _} = m_edge:insert(ColumnId, column_card, Id, Context),
+            mod_signal:emit({card_changed,
+                             [{event, added},
+                              {card, Id},
+                              {column, ColumnId},
+                              {project, ProjId}
+                             ]},
+                            Context),
             z_render:wire(
               [
                {Action, [{id, Id}|ActionArgs]} 

@@ -43,3 +43,8 @@ hr {
 a.card-title {
     text-decoration: none;
 }
+
+.column-sorter > .ui-state-highlight {
+    height: 2em;
+    margin: .25em;
+}
