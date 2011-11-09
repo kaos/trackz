@@ -1,0 +1,12 @@
+% -*- erlang -*-
+
+[
+ {person, ["user", id], resource_page, [{template, {cat, "page.tpl"}}]},
+ {person, ["user", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
+
+ {project, ["project", id], resource_page, [{template, {cat, "page.tpl"}}]},
+ {project, ["project", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
+
+ {card, ["card", id], resource_page, [{template, {cat, "page.tpl"}}]},
+ {card, ["card", id, slug], resource_page, [{template, {cat, "page.tpl"}}]}
+].

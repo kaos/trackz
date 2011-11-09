@@ -13,7 +13,7 @@
              class="right"
              icon="newwin"
              title="Go to card #"|append:id
-             action={redirect id=id}
+             href=id.page_url
           %}
 
           {% include "_icon.tpl"
