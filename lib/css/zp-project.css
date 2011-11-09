@@ -48,3 +48,11 @@ a.card-title {
     height: 2em;
     margin: .25em;
 }
+
+.trackz-icon {
+    padding: 1px;
+}
+
+.trackz-icon:hover {
+    padding: 0px;
+}

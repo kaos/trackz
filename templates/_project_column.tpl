@@ -4,11 +4,37 @@
          <small id="{{ #column_card_count.id }}">
                 {% include "_project_column_card_count.tpl" id=id %}
          </small>
-         <span class="right ui-state-default ui-corner-all" title="{{ "Add card to: "|append:id.title }}" >
-           <a id="{{ #add_card }}" class="ui-icon ui-icon-plus" href=#></a>
-         </span>
-         <a id="{{ #column_collapse_all.id }}" class="right ui-icon ui-icon-triangle-1-n" href=# title="Collapse all cards in this column"></a>
-         <a id="{{ #column_expand_all.id }}" class="right ui-icon ui-icon-triangle-1-s" href=# title="Expand all cards in this column"></a>
+
+         {# column header icons, from right to left #}
+         {% include "_icon.tpl"
+            id=#add_card.id
+            class="right"
+            title="Add card to: "|append:id.title
+            icon="plus"
+            action={dialog_open 
+                    title="Add card to: "|append:id.title
+                    template="_dialog_add_card.tpl"
+                    target=#column.id
+                    project=project
+                    column=id
+            }
+         %}
+         
+         {% include "_icon.tpl"
+            id=#column_collapse_all.id
+            class="right"
+            title="Collapse all cards in this column"
+            icon="triangle-1-n"
+            action={script script=["$('#", #column.id, " .collapse').click()"]|join}
+         %}
+
+         {% include "_icon.tpl"
+            id=#column_expand_all.id
+            class="right"
+            title="Expand all cards in this column"
+            icon="triangle-1-s"
+            action={script script=["$('#", #column.id, " .expand').click()"]|join}
+         %}
     </div>
 
     <div id="{{ #column.id }}" class="column-sorter ui-widget-content {{ column_content_class }} {% if first_col %}ui-corner-bl{% endif %} {% if last_col %}ui-corner-br{% endif %}">
@@ -18,15 +44,6 @@
     </div>
 </div>
 
-{% wire id=#add_card
-   action={dialog_open title="Add card to: "|append:id.title
-                       template="_dialog_add_card.tpl" 
-                       target=#column.id
-                       project=project
-                       column=id
-   }
-%}
-
 {% sorter id=#column.id
           handle=".card-icon"
           group="columns"
@@ -34,14 +51,6 @@
           delegate="trackz"
           tag={card_sorter id=id project=project}
           placeholder="ui-state-highlight"
-%}
-
-{# expand/collapse actions #}
-{% wire id=#column_collapse_all.id 
-        action={script script=["$('#", #column.id, " .collapse').click()"]|join}
-%}
-{% wire id=#column_expand_all.id 
-        action={script script=["$('#", #column.id, " .expand').click()"]|join}
 %}
 
 {% wire action={connect signal={card_changed column=id} action={update target=#column_card_count.id template="_project_column_card_count.tpl" id=id}} %}

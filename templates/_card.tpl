@@ -7,9 +7,36 @@
              <small class="ui-priority-secondary" title="version {{ id.version }}">#{{ id }}</small>
              {{ id.title }}
           </a>
-          <a class="right ui-icon ui-icon-newwin" href="{% url page id=id %}" title="Go to card page"></a>
-          <a id="{{ #card_collapse.id }}" class="right ui-icon ui-icon-triangle-1-n collapse" href=# title="Collapse this card"></a>
-          <a id="{{ #card_expand.id }}" class="right ui-icon ui-icon-triangle-1-s expand" href=# title="Expand this card"></a>
+
+          {% include "_icon.tpl"
+             id=#goto_card.id
+             class="right"
+             icon="newwin"
+             title="Go to card #"|append:id
+             action={redirect id=id}
+          %}
+
+          {% include "_icon.tpl"
+             id=#card_collapse.id
+             class="right collapse"
+             title="Collapse this card"
+             icon="triangle-1-n"
+             action=[
+                 {slide_up target=#card_details.id},
+                 {hide target=#card_collapse.id},
+                 {show target=#card_expand.id}]
+          %}
+
+          {% include "_icon.tpl"
+             id=#card_expand.id
+             class="right expand"
+             title="Expand this card"
+             icon="triangle-1-s"
+             action=[
+                 {slide_down target=#card_details.id},
+                 {hide target=#card_expand.id},
+                 {show target=#card_collapse.id}]
+          %}
 
           {# Body #}
           <div id="{{ #card_details.id }}">
@@ -25,18 +52,6 @@
           </div>
      </div>
 </div>
-
-{# expand/collapse actions #}
-{% wire id=#card_collapse.id 
-        action={slide_up target=#card_details.id} 
-        action={hide target=#card_collapse.id}
-        action={show target=#card_expand.id}
-%}
-{% wire id=#card_expand.id 
-        action={slide_down target=#card_details.id} 
-        action={hide target=#card_expand.id}
-        action={show target=#card_collapse.id}
-%}
 
 {# collapse cards by default #}
 {% wire
