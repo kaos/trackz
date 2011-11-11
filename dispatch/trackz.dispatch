@@ -9,6 +9,8 @@
 
  {project, ["project", id], resource_page, [{template, {cat, "page.tpl"}}]},
  {project, ["project", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
+ {edit_project, ["edit", "project", id], resource_page, [{template, {cat, "edit.tpl"}}]},
+ {edit_project_bare, ["edit", "project", id, "bare"], resource_page, [{template, {cat, "edit_bare.tpl"}}]},
 
  {card, ["card", id], resource_page, [{template, {cat, "page.tpl"}}]},
  {card, ["card", id, slug], resource_page, [{template, {cat, "page.tpl"}}]}

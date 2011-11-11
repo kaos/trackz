@@ -1,4 +1,4 @@
-<div class="ui-widget column left {{ column_class }}">
+<div class="ui-widget column {{ column_class }}">
     <div class="ui-widget-header {{ column_header_class }} {% if first_col %}ui-corner-tl{% endif %} {% if last_col %}ui-corner-tr{% endif %}">
          {{ id.title }} 
          <small id="{{ #column_card_count.id }}">
