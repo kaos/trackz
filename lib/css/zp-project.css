@@ -56,3 +56,9 @@ a.card-title {
 .trackz-icon:hover {
     padding: 0px;
 }
+
+.my_profile > img {
+    float: none;
+    margin: 0;
+    vertical-align: sub;
+}

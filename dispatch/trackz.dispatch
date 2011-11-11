@@ -1,6 +1,9 @@
 % -*- erlang -*-
 
 [
+ {home, [], resource_page, [{template, {cat, "page.tpl"}}, {id, home}]},
+ {my_profile, ["my-profile"], resource_template, [{template, "my_profile.tpl"}, {acl, is_auth}, {id, my_profile}]},
+
  {person, ["user", id], resource_page, [{template, {cat, "page.tpl"}}]},
  {person, ["user", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
 
