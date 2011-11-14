@@ -47,14 +47,6 @@
                <p>
                       {{ id.summary }}
                </p>
-               
-               Some really nice details about this card goes here...
           </div>
      </div>
 </div>
-
-{# collapse cards by default #}
-{% wire
-        action={slide_up target=#card_details.id} 
-        action={hide target=#card_collapse.id}
-%}

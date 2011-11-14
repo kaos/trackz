@@ -11,14 +11,10 @@
 {% tabs id="tabs" %}
 <div id="tabs">
      <ul>
-        <li><a href="#info">Info</a></li>
         <li><a href="#cards">Cards</a></li>
-        <li><a href="{% url edit_project_bare id=id %}">Edit</a></li>
+        <li><a href="#info">Info</a></li>
+        <li><a href="{% url edit_bare id=id %}">Edit</a></li>
      </ul>
-
-     <div id="info">
-          {{ id.body|show_media }}
-     </div>
 
      <div id="cards">
      <table class="columns">
@@ -36,6 +32,11 @@
             </tr>
      </table>
      </div>
+
+     <div id="info">
+          {{ id.body|show_media }}
+     </div>
+
 </div>
 
 {% endblock %}

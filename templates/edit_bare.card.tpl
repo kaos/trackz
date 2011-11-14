@@ -5,7 +5,7 @@
    <input type="hidden" name="id" value="{{ id }}" />
    <fieldset>
         <div>
-                <label for="title">Project name</label>
+                <label for="title">Card title</label>
                 <input type="text" id="title" name="title" value="{{ id.title }}" />
                 {% validate id="title" type={presence} %}
         </div>

@@ -54,3 +54,6 @@
 %}
 
 {% wire action={connect signal={card_changed column=id} action={update target=#column_card_count.id template="_project_column_card_count.tpl" id=id}} %}
+
+{# collapse all cards by default #}
+{% wire action={script script=["$('#", #column_collapse_all.id, "').click()"]|join} %}
