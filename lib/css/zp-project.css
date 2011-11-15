@@ -67,3 +67,7 @@ a.card-title {
     margin: 0;
     vertical-align: sub;
 }
+
+.ui-widget-content {
+    padding: .5em;
+}

@@ -11,9 +11,9 @@
   <input type="hidden" name="project" value="{{ project }}" />
   <input type="hidden" name="column" value="{{ column }}" />
   <div class="form-item">
-    <label for="title">{_ Card Title _}</label>
-    <input id="title" type="text" name="title" />
-    {% validate id="title" type={presence} %}
+    <label for="{{ #title }}">{_ Card Title _}</label>
+    <input id="{{ #title }}" type="text" name="title" />
+    {% validate id=#title name="title" type={presence} %}
   </div>
   <div class="right">
     {% button text=_"Add Card" %}
