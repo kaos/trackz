@@ -8,7 +8,7 @@
     {{ id.summary }}
   </p>
 
-  {% with id.card_project[1] as project %}
+  {% with id.s.column_card[1].s.project_column[1] as project %}
   <p>
         Project: <a href="{{ project.page_url }}" title="{{ project.summary }}">{{ project.title }}</a>
   </p>

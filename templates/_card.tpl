@@ -1,3 +1,4 @@
+{% with object_id as id %}
 {% sortable id=#card.id tag=id %}
 <div id="{{ #card.id }}" class="card ui-widget">
      <div class="ui-widget-content ui-corner-all">  
@@ -50,3 +51,4 @@
           </div>
      </div>
 </div>
+{% endwith %}
