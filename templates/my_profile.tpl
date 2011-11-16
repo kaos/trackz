@@ -14,11 +14,22 @@
   {{ id.body|show_media }}
 
   <p>
-    Is me: {{ id.is_me }}<br />
-    
     {% if id.is_me %}
       {% button text=_"Create a new Project" 
-         action={dialog_open title=_"Create Project" template="_dialog_create_project.tpl" target="projects"} 
+         action={dialog_new_rsc
+                        cat="project"
+                        nocatselect=1
+                        redirect=0
+                        action={with_args
+                                action={link
+                                        predicate="project_member"
+                                        object_id=id
+                                        element_id="projects"
+                                        edge_template="_project_list_entry.tpl"
+                                }
+                                arg={subject_id id}
+                        }
+         }
       %}
     {% endif %}
     <br />
