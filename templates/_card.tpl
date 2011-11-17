@@ -3,11 +3,11 @@
 <div id="{{ #card.id }}" class="card ui-widget">
      <div class="ui-widget-content ui-corner-all">  
           {# Header #}
-          <span class="card-icon ui-icon ui-icon-arrow-4" title="Sort this card within this column, or move it to another column"></span>
-          <a id="{{ #card_title.id }}" class="card-title ui-priority-primary" href=# title="{{ id.short_title }}">
-             <small class="ui-priority-secondary" title="version {{ id.version }}">#{{ id }}</small>
-             {{ id.title }}
-          </a>
+          {% include "_icon.tpl" id=#drag_icon.id class="card-icon" icon="arrow-4" title="Sort this card within this column, or move it to another column" %}
+           <a id="{{ #card_title.id }}" class="card-title ui-priority-primary" href=# title="{{ id.short_title }}">
+               <small class="ui-priority-secondary" title="version {{ id.version }}">#{{ id }}</small>
+               {{ id.title }}
+           </a>
 
           {% include "_icon.tpl"
              id=#goto_card.id

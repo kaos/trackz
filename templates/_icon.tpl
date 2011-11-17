@@ -1,5 +1,9 @@
 <span id="{{ id }}" class="{{ class }} trackz-icon ui-corner-all" title="{{ title }}">
+{% if href or action %}
       <a class="ui-icon ui-icon-{{ icon }}" href="{{ href|default:"#" }}"></a>
+{% else %}
+      <span class="ui-icon ui-icon-{{ icon }}"></span>
+{% endif %}
 </span>
 
 {% if action %}

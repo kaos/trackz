@@ -13,9 +13,7 @@
 }
 
 .column {
-    /*display: inline-block;
-    width: 100%;*/
-    margin: .25em;
+     margin: .25em;
 }
 
 .column > .ui-widget-content {
@@ -33,7 +31,7 @@
 }
 
 small {
-    font-size: 0.875em;
+    font-size: 0.8em;
 }
 
 .card > .ui-widget-content {
@@ -43,6 +41,10 @@ small {
 
 hr {
     margin-bottom: .25em;
+}
+
+.card-title {
+    vertical-align: text-bottom;
 }
 
 a.card-title {
