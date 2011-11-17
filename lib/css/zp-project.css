@@ -44,7 +44,7 @@ hr {
 }
 
 .card-title {
-    vertical-align: text-bottom;
+
 }
 
 a.card-title {
@@ -64,6 +64,14 @@ a.card-title {
     padding: 0px;
 }
 
+.trackz-icon-caption {
+    padding-right: .5em;
+}
+
+a.trackz-icon-caption {
+    text-decoration: none;
+}
+
 .my_profile > img {
     float: none;
     margin: 0;
@@ -72,4 +80,9 @@ a.card-title {
 
 .ui-widget-content {
     padding: .5em;
+}
+
+.ui-icon {
+    display: inline-block;
+    vertical-align: text-bottom;
 }

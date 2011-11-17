@@ -1,8 +1,18 @@
 <span id="{{ id }}" class="{{ class }} trackz-icon ui-corner-all" title="{{ title }}">
-{% if href or action %}
+{% if caption %}
+   {% if href or action %}
       <a class="ui-icon ui-icon-{{ icon }}" href="{{ href|default:"#" }}"></a>
-{% else %}
+      <a class="trackz-icon-caption" href="{{ href|default:"#" }}">{{ caption }}</a>
+   {% else %}
       <span class="ui-icon ui-icon-{{ icon }}"></span>
+      <span class="trackz-icon-caption">{{ caption }}</span>
+   {% endif %}
+{% else %}
+   {% if href or action %}
+      <a class="ui-icon ui-icon-{{ icon }}" href="{{ href|default:"#" }}"></a>
+   {% else %}
+      <span class="ui-icon ui-icon-{{ icon }}"></span>
+   {% endif %}
 {% endif %}
 </span>
 

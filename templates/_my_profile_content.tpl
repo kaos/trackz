@@ -1,11 +1,13 @@
+<h1>{{ m.rsc["my_profile"].title }}</h1>
+
 <h2>{{ id.title }}{% if id.short_title %} ({{ id.short_title }}){% endif %}</h2>
 
 {% if target %}
-  {% wire id="edit-link" type="click" action={update target=target template="_edit_my_profile.tpl" id=id} %}
-  <a id="edit-link" href=# title="Edit profile">Edit</a>
+   {% include "_icon.tpl" id=#edit.id caption="Edit profile" icon="pencil" action=[{hide target=target}, {update target=target appear template="_edit_my_profile.tpl" id=id}] %}
 {% endif %}
 
-<p class="summary">{{ id.summary }}</p>
+<div class="ui-helper-clearfix">
+     <p class="summary">{{ id.summary }}</p>
 
 {% if id.body %}
   <h3>Presentation</h3>
@@ -21,4 +23,5 @@
     {% endfor %}
   </ul>
 
+</div>
 
