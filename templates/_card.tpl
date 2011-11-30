@@ -3,7 +3,7 @@
 <div id="{{ #card.id }}" class="card ui-widget">
      <div class="ui-widget-content ui-corner-all">  
           {# Header #}
-          {% include "_icon.tpl" id=#drag_icon.id class="card-icon" icon="arrow-4" title="Sort this card within this column, or move it to another column" %}
+          {% include "_icon.tpl" id=#drag_icon.id class="card-icon" icon="arrow-4" title="Drag and drop this card to sort it within this column, or move it to another column" %}
            <a id="{{ #card_title.id }}" class="card-title ui-priority-primary" href=# title="{{ id.short_title }}">
                <small class="ui-priority-secondary" title="version {{ id.version }}">#{{ id }}</small>
                {{ id.title }}
@@ -48,6 +48,19 @@
                <p>
                       {{ id.summary }}
                </p>
+
+               <div class="ui-widget-header ui-priority-secondary ui-corner-top">
+                 History
+               </div>
+               <div class="ui-widget-content ui-corner-bottom">
+                 <ul>
+                    {% for entry in m.tkvstore.card_history[id] %}
+                      {% include "_card_history_entry.tpl" event=entry|element:1 props=entry|element:2 %}
+                    {% empty %}
+                       No history
+                    {% endfor %}
+                 </ul>
+               </div>
           </div>
      </div>
 </div>

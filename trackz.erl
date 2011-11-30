@@ -32,7 +32,8 @@
 %% API
 -export([
          init/1,
-         event/2
+         event/2,
+         observe_rsc_update_done/2
         ]).
 
 
@@ -71,26 +72,6 @@ event({sort, Sorted, #dragdrop{ tag={card_sorter, Props}}}, Context) ->
                      ]},
                     Context),
     Context;
-event({submit, {create_project, Args}, _, _}, Context) ->
-    Title = z_context:get_q_validated("title", Context),
-    case m_rsc:insert(
-           [
-            {title, Title}, 
-            {category_id, m_category:name_to_id_check(project, Context)}
-           ], 
-           Context) 
-    of
-        {ok, Id} ->
-            m_edge:insert(Id, project_member, z_acl:user(Context), Context),
-            z_render:wire(
-              [
-               {Action, [{id, Id}|ActionArgs]} 
-               || {Action, ActionArgs} <- proplists:get_all_values(action, Args)
-              ],
-              Context);
-        Error ->
-            z_render:growl_error(io_lib:format("Create Project failed~n~p", [Error]), Context)
-    end;
 event({submit, {add_card, Args}, _, _}, Context) ->
     Title = z_context:get_q_validated("title", Context),
     case m_rsc:insert(
@@ -120,9 +101,86 @@ event({submit, {add_card, Args}, _, _}, Context) ->
               Context);
         Error ->
             z_render:growl_error(io_lib:format("Add card failed~n~p", [Error]), Context)
+    end;
+event({submit, {create_project, Args}, _, _}, Context) ->
+    Title = z_context:get_q_validated("title", Context),
+    case m_rsc:insert(
+           [
+            {title, Title}, 
+            {category_id, m_category:name_to_id_check(project, Context)}
+           ], 
+           Context) 
+    of
+        {ok, Id} ->
+            m_edge:insert(Id, project_member, z_acl:user(Context), Context),
+            z_render:wire(
+              [
+               {Action, [{id, Id}|ActionArgs]} 
+               || {Action, ActionArgs} <- proplists:get_all_values(action, Args)
+              ],
+              Context);
+        Error ->
+            z_render:growl_error(io_lib:format("Create Project failed~n~p", [Error]), Context)
+    end.
+
+%%--------------------------------------------------------------------
+observe_rsc_update_done(#rsc_update_done{ id=Card, 
+                                          action=Action,
+                                          post_is_a=IsA,
+                                          pre_props=PreP,
+                                          post_props=PostP },
+                        Context) ->
+    case lists:member(card, IsA) of
+        false -> undefined;
+        true ->
+            ok = add_card_history(
+                   Card, 
+                   {Action, 
+                    get_updated_props(Action, PreP, PostP)
+                   },
+                   Context)
     end.
 
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
+
+add_card_history(Card, Event, Context) ->
+    History = get_card_history(Card, Context),
+    save_card_history(Card, [Event|History], Context).
+
+get_card_history(Card, Context) ->
+    case m_tkvstore:get(card_history, Card, Context) of
+        undefined ->
+            [];
+        List when is_list(List) ->
+            List
+    end.
+
+save_card_history(Card, History, Context) ->
+    1 = m_tkvstore:put(card_history, Card, History, Context),
+    ok.
+
+get_updated_props(insert, _, PostP) ->
+    [ {transform_propname(Name), Value} || {Name, Value} <- PostP,
+                                           filter_inserted_props(Name)];
+get_updated_props(update, _, PostP) ->
+    [ {transform_propname(Name), Value} || {Name, Value} <- PostP,
+                                           filter_updated_props(Name)].
+
+
+transform_propname(modifier_id) -> by;
+transform_propname(modified) -> timestamp;
+transform_propname(NoTransform) -> NoTransform.
+
+filter_inserted_props(version) -> true;
+filter_inserted_props(modifier_id) -> true;
+filter_inserted_props(modified) -> true;
+filter_inserted_props(_) -> false.
+
+filter_updated_props(title) -> true;
+filter_updated_props(summary) -> true;
+filter_updated_props(description) -> true;
+filter_updated_props(Others) -> filter_inserted_props(Others).
+
