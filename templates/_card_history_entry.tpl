@@ -13,9 +13,11 @@
 
   {% for prop, value in props %}
     {% if not prop|member:[`version`, `by`, `timestamp`] %}
-      <p>
-        {{ event }} <b>{{ prop }}</b> to <b>{{ value|truncate:50 }}</b>.
-      </p>
+      {% if event == `move` %}
+        {% include "_card_history_entry_desc.tpl" event="moved" prop="" value=value.title %}
+      {% else %}
+        {% include "_card_history_entry_desc.tpl" event="updated" prop=prop value=value %}
+      {% endif %}
     {% endif %}
   {% endfor %}
 </li>

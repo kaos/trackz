@@ -33,7 +33,9 @@
 -export([
          init/1,
          event/2,
-         observe_rsc_update_done/2
+         observe_rsc_update_done/2,
+         observe_edge_insert/2
+%%          observe_edge_delete/2
         ]).
 
 
@@ -141,15 +143,47 @@ observe_rsc_update_done(#rsc_update_done{ id=Card,
                    Context)
     end.
 
+%%--------------------------------------------------------------------
+observe_edge_insert(#edge_insert{ predicate=column_card, 
+                                  subject_id=Column, 
+                                  object_id=Card },
+                    Context) ->
+    ok = add_card_history(Card, 
+                          {move,
+                           [
+                            {by, z_acl:user(Context)},
+                            {timestamp, calendar:local_time()},
+                            {column, Column}
+                           ]
+                          },
+                          Context);
+observe_edge_insert(_, _) -> undefined.
+
+
+%%--------------------------------------------------------------------
+%% observe_edge_delete(#edge_delete{ predicate=column_card,
+%%                                   subject_id=Column,
+%%                                   object_id=Card },
+%%                     Context) ->
+%%     ok;
+%% observe_edge_delete(_, _) -> undefined.
+
+
+%%--------------------------------------------------------------------
+%%--------------------------------------------------------------------
+
 
 %%====================================================================
 %% Internal functions
 %%====================================================================
 
+%%--------------------------------------------------------------------
 add_card_history(Card, Event, Context) ->
+    mod_signal:emit({card_history, [{card, Card}, {event, Event}]}, Context),
     History = get_card_history(Card, Context),
     save_card_history(Card, [Event|History], Context).
 
+%%--------------------------------------------------------------------
 get_card_history(Card, Context) ->
     case m_tkvstore:get(card_history, Card, Context) of
         undefined ->
@@ -158,10 +192,12 @@ get_card_history(Card, Context) ->
             List
     end.
 
+%%--------------------------------------------------------------------
 save_card_history(Card, History, Context) ->
     1 = m_tkvstore:put(card_history, Card, History, Context),
     ok.
 
+%%--------------------------------------------------------------------
 get_updated_props(insert, _, PostP) ->
     [ {transform_propname(Name), Value} || {Name, Value} <- PostP,
                                            filter_inserted_props(Name)];
@@ -169,11 +205,12 @@ get_updated_props(update, _, PostP) ->
     [ {transform_propname(Name), Value} || {Name, Value} <- PostP,
                                            filter_updated_props(Name)].
 
-
+%%--------------------------------------------------------------------
 transform_propname(modifier_id) -> by;
 transform_propname(modified) -> timestamp;
 transform_propname(NoTransform) -> NoTransform.
 
+%%--------------------------------------------------------------------
 filter_inserted_props(version) -> true;
 filter_inserted_props(modifier_id) -> true;
 filter_inserted_props(modified) -> true;
@@ -181,6 +218,8 @@ filter_inserted_props(_) -> false.
 
 filter_updated_props(title) -> true;
 filter_updated_props(summary) -> true;
-filter_updated_props(description) -> true;
+filter_updated_props(body) -> true;
 filter_updated_props(Others) -> filter_inserted_props(Others).
 
+%%--------------------------------------------------------------------
+%%--------------------------------------------------------------------

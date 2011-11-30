@@ -53,7 +53,7 @@
                  History
                </div>
                <div class="ui-widget-content ui-corner-bottom">
-                 <ul>
+                 <ul id="{{ #card_history.id }}">
                     {% for entry in m.tkvstore.card_history[id] %}
                       {% include "_card_history_entry.tpl" event=entry|element:1 props=entry|element:2 %}
                     {% empty %}
@@ -64,4 +64,7 @@
           </div>
      </div>
 </div>
+
+{% wire action={connect signal={card_history card=id} action={insert_top target=#card_history.id template="_card_history_signal.tpl"}} %}
+
 {% endwith %}
