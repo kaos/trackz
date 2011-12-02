@@ -1,14 +1,16 @@
-<li>
-  <span title="{{ props.timestamp }}">
-    {{ props.timestamp|timesince }}
-  </span> 
-  by 
-  <a href="{{ props.by.page_url }}" title="{{ props.by.title }}">
-    {{ props.by.short_title|default:props.by.title }}
-  </a>
+<li class="history-entry">
+  <div class="history-entry-caption">
+    <span class="do_timesince" data-timesince="time: '{{ props.timestamp}}'" title="{{ props.timestamp }}">
+      {{ props.timestamp|timesince }}
+    </span> 
+    by 
+    <a href="{{ props.by.page_url }}" title="{{ props.by.title }}">
+      {{ props.by.short_title|default:props.by.title }}
+    </a>
+  </div>
 
   {% if event == `insert` %}
-    <p>created.</p>
+    {% include "_card_history_entry_desc.tpl" event="created" prop="card"  %}
   {% endif %}
 
   {% for prop, value in props %}
@@ -16,7 +18,7 @@
       {% if event == `move` %}
         {% include "_card_history_entry_desc.tpl" event="moved" prop="" value=value.title %}
       {% else %}
-        {% include "_card_history_entry_desc.tpl" event="updated" prop=prop value=value %}
+        {% include "_card_history_entry_desc.tpl" event="updated" %}
       {% endif %}
     {% endif %}
   {% endfor %}

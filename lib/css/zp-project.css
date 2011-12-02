@@ -86,3 +86,16 @@ a.trackz-icon-caption {
     display: inline-block;
     vertical-align: text-bottom;
 }
+
+.history-entry {
+    background-color: #eee;
+    margin-bottom: 2px;
+}
+
+.history-entry-caption {
+    background-color: #ddd;
+}
+
+.history-entry-desc {
+    padding-left: 1em;
+}

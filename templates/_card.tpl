@@ -42,10 +42,11 @@
           {# Body #}
           <div id="{{ #card_details.id }}">
                <hr />
-               <small class="ui-priority-secondary" title="Created {{ id.created|timesince }}">
+               <small class="ui-priority-secondary" title="Created {{ id.created }}">
                       Created by {{ id.creator_id.title }}
+                      <span class="do_timesince" data-timesince="time: '{{ id.created }}'"></span>
                </small>
-               <p>
+               <p title="{{ id.body }}">
                       {{ id.summary }}
                </p>
 
@@ -53,7 +54,7 @@
                  History
                </div>
                <div class="ui-widget-content ui-corner-bottom">
-                 <ul id="{{ #card_history.id }}">
+                 <ul id="{{ #card_history.id }}" class="card-history">
                     {% for entry in m.tkvstore.card_history[id] %}
                       {% include "_card_history_entry.tpl" event=entry|element:1 props=entry|element:2 %}
                     {% empty %}
