@@ -138,7 +138,7 @@ observe_rsc_update_done(#rsc_update_done{ id=Card,
             ok = add_card_history(
                    Card, 
                    {Action, 
-                    get_updated_props(Action, PreP, PostP)
+                    get_updated_props(Action, PostP -- PreP)
                    },
                    Context)
     end.
@@ -198,16 +198,17 @@ save_card_history(Card, History, Context) ->
     ok.
 
 %%--------------------------------------------------------------------
-get_updated_props(insert, _, PostP) ->
-    [ {transform_propname(Name), Value} || {Name, Value} <- PostP,
+get_updated_props(insert, Updated) ->
+    [ {transform_propname(Name), Value} || {Name, Value} <- Updated,
                                            filter_inserted_props(Name)];
-get_updated_props(update, _, PostP) ->
-    [ {transform_propname(Name), Value} || {Name, Value} <- PostP,
+get_updated_props(update, Updated) ->
+    [ {transform_propname(Name), Value} || {Name, Value} <- Updated,
                                            filter_updated_props(Name)].
 
 %%--------------------------------------------------------------------
 transform_propname(modifier_id) -> by;
 transform_propname(modified) -> timestamp;
+transform_propname(body) -> description;
 transform_propname(NoTransform) -> NoTransform.
 
 %%--------------------------------------------------------------------
