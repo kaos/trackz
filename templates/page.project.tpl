@@ -34,7 +34,7 @@
      </div>
 
      <div id="info">
-          {{ id.body|show_media }}
+       {% include "_project_info.tpl" id=id %}
      </div>
 
 </div>
