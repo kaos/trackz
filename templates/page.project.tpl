@@ -2,6 +2,7 @@
 
 {% block content %}
 
+{% if m.acl.view[id] %}
 <h1>{{ id.title }}</h1>
 
 <p class="summary">
@@ -20,6 +21,7 @@
      <table class="columns">
             <tr>
                 {% for col in id.o.project_column %}
+                  {% if m.acl.view[col] %}
                    <td>
                    {% include "_project_column.tpl" 
                       project=id 
@@ -28,6 +30,7 @@
                       last_col=forloop.last
                    %}
                    </td>
+                  {% endif %}
                 {% endfor %}
             </tr>
      </table>
@@ -38,5 +41,11 @@
      </div>
 
 </div>
+
+{% else %}
+
+<h1>You may not view this project... ({{ id.title }})</h1>
+
+{% endif %}
 
 {% endblock %}

@@ -7,6 +7,8 @@
          </small>
 
          {# column header icons, from right to left #}
+
+         {% if m.acl.insert[id] %}
          {% include "_icon.tpl"
             id=#add_card.id
             class="right"
@@ -21,7 +23,8 @@
                         edge_template="_card.tpl"
             }
          %}
-         
+         {% endif %}
+
          {% include "_icon.tpl"
             id=#column_collapse_all.id
             class="right"
@@ -46,6 +49,7 @@
     </div>
 </div>
 
+{% if m.acl.update[id] %}
 {% sorter id=column_id
           handle=".card-icon"
           group="columns"
@@ -54,6 +58,7 @@
           tag={card_sorter id=id project=project}
           placeholder="ui-state-highlight"
 %}
+{% endif %}
 
 {% wire action={connect signal={card_changed column=id} action={update target=#column_card_count.id template="_project_column_card_count.tpl" id=id}} %}
 

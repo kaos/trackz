@@ -14,6 +14,6 @@
  {card, ["card", id], resource_page, [{template, {cat, "page.tpl"}}]},
  {card, ["card", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
 
- {edit, ["edit", id], resource_page, [{template, {cat, "edit.tpl"}}]},
- {edit_bare, ["edit", id, "bare"], resource_page, [{template, {cat, "edit_bare.tpl"}}]}
+ {edit, ["edit", id], resource_page, [{template, {cat, "edit.tpl"}}, {acl, is_auth}]},
+ {edit_bare, ["edit", id, "bare"], resource_page, [{template, {cat, "edit_bare.tpl"}}, {acl, is_auth}]}
 ].

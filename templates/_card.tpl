@@ -1,9 +1,12 @@
 {% with object_id as id %}
-{% sortable id=#card.id tag=id %}
+{% if m.acl.view[id] %}
 <div id="{{ #card.id }}" class="card ui-widget">
      <div class="ui-widget-content ui-corner-all">  
           {# Header #}
-          {% include "_icon.tpl" id=#drag_icon.id class="card-icon" icon="arrow-4" title="Drag and drop this card to sort it within this column, or move it to another column" %}
+          {% if m.acl.update[id] %}
+            {% sortable id=#card.id tag=id %}
+            {% include "_icon.tpl" id=#drag_icon.id class="card-icon" icon="arrow-4" title="Drag and drop this card to sort it within this column, or move it to another column" %}
+          {% endif %}
            <a id="{{ #card_title.id }}" class="card-title ui-priority-primary" href=# title="{{ id.short_title }}">
                <small class="ui-priority-secondary" title="version {{ id.version }}">#{{ id }}</small>
                {{ id.title }}
@@ -67,5 +70,5 @@
 </div>
 
 {% wire action={connect signal={card_history card=id} action={insert_top target=#card_history.id template="_card_history_signal.tpl"}} %}
-
+{% endif %}
 {% endwith %}
