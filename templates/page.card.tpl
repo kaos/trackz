@@ -1,7 +1,8 @@
 {% extends "base.tpl" %}
 
 {% block content %}
-  
+{% if m.acl.view[id] %}  
+
   <h1>{{ id.title }}</h1>
   
   <p class="summary">
@@ -18,7 +19,9 @@
 <div id="tabs">
      <ul>
         <li><a href="#info">Info</a></li>
-        <li><a href="{% url edit_bare id=id %}">Edit</a></li>
+        {% if m.acl.update[id] %}
+          <li><a href="{% url edit_bare id=id %}">Edit</a></li>
+        {% endif %}
      </ul>
 
      <div id="info">
@@ -27,4 +30,7 @@
 
 </div>
 
+{% else %}
+  <h1>You are not authorized to view this card</h1>
+{% endif %}
 {% endblock %}

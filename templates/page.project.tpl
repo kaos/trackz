@@ -14,7 +14,9 @@
      <ul>
         <li><a href="#cards">Cards</a></li>
         <li><a href="#info">Info</a></li>
-        <li><a href="{% url edit_bare id=id %}">Edit</a></li>
+        {% if m.acl.update[id] %}
+          <li><a href="{% url edit_bare id=id %}">Edit</a></li>
+        {% endif %}
      </ul>
 
      <div id="cards">
