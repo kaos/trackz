@@ -24,18 +24,21 @@
 -author("Andreas Stenius <andreas.stenius@astekk.se>").
 -mod_title("Trackz").
 -mod_description("Project Tracker on Zotonic - KanBan style").
+-mod_schema(1).
 -mod_prio(100).
+-mod_depends([rbac]).
 
 -include_lib("zotonic.hrl").
 
 
 %% API
 -export([
-         init/1,
+         %% init/1,
          event/2,
+         manage_schema/2,
          observe_rsc_update_done/2,
          observe_edge_insert/2
-%%          observe_edge_delete/2
+         %% observe_edge_delete/2
         ]).
 
 
@@ -44,21 +47,38 @@
 %%====================================================================
 
 %%--------------------------------------------------------------------
-init(Context) ->
-    z_datamodel:manage(?MODULE,
-		       #datamodel{ categories = [{project, undefined, [{title, <<"Project">>}]},
-						 {column, undefined, [{title, <<"Column">>}]},
-                                                 {card, undefined, [{title, <<"Card">>}]}
-						],
-				   predicates = [{project_member, [{title, <<"Project Member">>}], [{project, person}]},
-						 {project_column, [{title, <<"Project Column">>}], [{project, column}]},
-						 {column_card, [{title, <<"Column Card">>}], [{column, card}]},
-                                                 {card_project, [{title, <<"Card Project">>}], [{card, project}]}
-						]
-				 },
-		       Context
-		      ),
-    ok.
+%% init(_Context) ->
+%%     ok.
+
+manage_schema(install, _Context) ->
+    #datamodel{ 
+       categories = 
+           [
+            {project, rbac_domain, [{title, <<"Project">>}]},
+            {column, meta, [{title, <<"Column">>}]},
+            {card, meta, [{title, <<"Card">>}]}
+           ],
+       predicates = 
+           [
+            {project_column, [{title, <<"Project Column">>}], [{project, column}]},
+            {column_card, [{title, <<"Column Card">>}], [{column, card}]}
+           ],
+       resources =
+           [
+            {member_role, rbac_role, [{title, "Project Member Role"}]},
+            {admin_role, rbac_role, [{title, "Project Admin Role"}]},
+            {view_op, rbac_operation, [{title, "view"}]},
+            {update_op, rbac_operation, [{title, "update"}]},
+            {delete_op, rbac_operation, [{title, "delete"}]}
+           ],
+       edges =
+           [
+            {member_role, rbac_role_operation, view_op},
+            {member_role, rbac_role_operation, update_op},
+            {admin_role, rbac_role_operation, delete_op},
+            {admin_role, rbac_domain_role, member_role}
+           ]
+      }.
 
 			
 %%--------------------------------------------------------------------
@@ -85,7 +105,7 @@ event({submit, {add_card, Args}, _, _}, Context) ->
     of
         {ok, Id} ->
             ProjId = z_convert:to_integer(z_context:get_q("project", Context)),
-            {ok, _} = m_edge:insert(Id, card_project, ProjId, Context),
+            {ok, _} = m_edge:insert(ProjId, rbac_domain_rsc, Id, Context),
             ColumnId = z_convert:to_integer(z_context:get_q("column", Context)),
             {ok, _} = m_edge:insert(ColumnId, column_card, Id, Context),
             mod_signal:emit({card_changed,
@@ -114,7 +134,7 @@ event({submit, {create_project, Args}, _, _}, Context) ->
            Context) 
     of
         {ok, Id} ->
-            m_edge:insert(Id, project_member, z_acl:user(Context), Context),
+            ok = setup_project(Id, Context),
             z_render:wire(
               [
                {Action, [{id, Id}|ActionArgs]} 
@@ -223,4 +243,30 @@ filter_updated_props(body) -> true;
 filter_updated_props(Others) -> filter_inserted_props(Others).
 
 %%--------------------------------------------------------------------
+setup_project(Id, Context) ->
+    case m_rsc:insert(
+           [
+            {title, m_rsc:p(Id, title, Context) ++ " admin"}, 
+            {category_id, m_category:name_to_id_check(rbac_role, Context)}
+           ], 
+           Context) 
+    of
+        {ok, AdminRoleId} ->
+            m_edge:insert(AdminRoleId, rbac_domain_role, admin_role, Context),
+            m_edge:insert(Id, rbac_domain_role, AdminRoleId, Context),
+            m_edge:insert(z_acl:user(Context), rbac_role_member, AdminRoleId, Context)
+    end,
+    case m_rsc:insert(
+           [
+            {title, m_rsc:p(Id, title, Context) ++ " member"}, 
+            {category_id, m_category:name_to_id_check(rbac_role, Context)}
+           ], 
+           Context) 
+    of
+        {ok, MemberRoleId} ->
+            m_edge:insert(MemberRoleId, rbac_domain_role, member_role, Context),
+            m_edge:insert(Id, rbac_domain_role, MemberRoleId, Context)
+    end,
+    ok.
+
 %%--------------------------------------------------------------------

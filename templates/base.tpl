@@ -12,18 +12,18 @@
 	{% all include "_html_head.tpl" %}
 
 	{% lib
-		"css/zp-compressed.css"
 		"css/zp-project.css"
-		"css/zp-menu.css"
 		"css/jquery.loadmask.css" 
 	%}
+
+		<!-- "css/zp-menu.css" -->
 
 	<!--[if IE]>
 	{% lib	"css/zp-ie.css" %}
 	<![endif]-->
 	
 	<!-- Make ie understand html5 -->
-	{% lib "js/apps/modernizr.js" %}
+	{ % lib "js/apps/modernizr.js" % }
 
 	{% block html_head_extra %}{% endblock %}
 </head>

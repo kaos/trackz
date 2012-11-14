@@ -1,6 +1,6 @@
 {% lib 
-   "css/zp-growl.css" 
-   "css/zp-dialog.css"
+   "css/z.growl.css" 
+   "css/z.dialog.css"
 %}
 
 {# keep the jquery ui theme css in it's own link tag. The relative paths gets screwed

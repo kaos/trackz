@@ -1,19 +1,19 @@
 % -*- erlang -*-
 
 [
- {home, [], resource_page, [{template, {cat, "page.tpl"}}, {id, home}]},
- {dashboard, ["dashboard"], resource_template, [{template, "dashboard.tpl"}, {acl, is_auth}, {id, dashboard}]},
- {my_profile, ["my-profile"], resource_template, [{template, "my_profile.tpl"}, {acl, is_auth}, {id, my_profile}]},
+ {home, [], controller_page, [{template, {cat, "page.tpl"}}, {id, home}]},
+ {dashboard, ["dashboard"], controller_template, [{template, "dashboard.tpl"}, {acl, is_auth}, {id, dashboard}]},
+ {my_profile, ["my-profile"], controller_template, [{template, "my_profile.tpl"}, {acl, is_auth}, {id, my_profile}]},
 
- {person, ["user", id], resource_page, [{template, {cat, "page.tpl"}}]},
- {person, ["user", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
+ {person, ["user", id], controller_page, [{template, {cat, "page.tpl"}}]},
+ {person, ["user", id, slug], controller_page, [{template, {cat, "page.tpl"}}]},
 
- {project, ["project", id], resource_page, [{template, {cat, "page.tpl"}}]},
- {project, ["project", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
+ {project, ["project", id], controller_page, [{template, {cat, "page.tpl"}}]},
+ {project, ["project", id, slug], controller_page, [{template, {cat, "page.tpl"}}]},
 
- {card, ["card", id], resource_page, [{template, {cat, "page.tpl"}}]},
- {card, ["card", id, slug], resource_page, [{template, {cat, "page.tpl"}}]},
+ {card, ["card", id], controller_page, [{template, {cat, "page.tpl"}}]},
+ {card, ["card", id, slug], controller_page, [{template, {cat, "page.tpl"}}]},
 
- {edit, ["edit", id], resource_page, [{template, {cat, "edit.tpl"}}, {acl, is_auth}]},
- {edit_bare, ["edit", id, "bare"], resource_page, [{template, {cat, "edit_bare.tpl"}}, {acl, is_auth}]}
+ {edit, ["edit", id], controller_page, [{template, {cat, "edit.tpl"}}, {acl, is_auth}]},
+ {edit_bare, ["edit", id, "bare"], controller_page, [{template, {cat, "edit_bare.tpl"}}, {acl, is_auth}]}
 ].

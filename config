@@ -5,5 +5,6 @@
  {hostname, "trackz.local:8000"},
  {dbdatabase, "zotonic"},
  {dbschema, "trackz"},
- {admin_password, "trackz"}
+ {admin_password, "trackz"},
+ {skeleton, empty}
 ].
