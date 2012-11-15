@@ -1,11 +1,6 @@
 
-.zp-wrapper {
-    width: 90%;
-}
-
-.clearfix, 
-.zp-wrapper {
-    display: block;
+body > .container {
+  padding: 45px;
 }
 
 .columns {

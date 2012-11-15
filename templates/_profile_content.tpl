@@ -1,9 +1,9 @@
-<h1>{{ m.rsc["my_profile"].title }}</h1>
+<h1>{{ m.rsc["profile"].title }}</h1>
 
 <h2>{{ id.title }}{% if id.short_title %} ({{ id.short_title }}){% endif %}</h2>
 
 {% if target %}
-   {% include "_icon.tpl" id=#edit.id caption="Edit profile" icon="pencil" action=[{hide target=target}, {update target=target appear template="_edit_my_profile.tpl" id=id}] %}
+   {% include "_icon.tpl" id=#edit.id caption="Edit profile" icon="pencil" action=[{hide target=target}, {update target=target appear template="_edit_profile.tpl" id=id}] %}
 {% endif %}
 
 <div class="ui-helper-clearfix">

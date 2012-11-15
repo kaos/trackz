@@ -6,5 +6,7 @@
  {dbdatabase, "zotonic"},
  {dbschema, "trackz"},
  {admin_password, "trackz"},
- {skeleton, empty}
+ {skeleton, empty},
+ {modules, [mod_rbac, mod_base_site, mod_bootstrap, mod_geomap, mod_l10n]},
+ {default_menu, [{home, []}, {profile, [{dashboard, []}, {logoff, []}]}]}
 ].

@@ -12,62 +12,53 @@
 	{% all include "_html_head.tpl" %}
 
 	{% lib
-		"css/zp-project.css"
-		"css/jquery.loadmask.css" 
+           "bootstrap/css/bootstrap.css"
+           "css/zp-project.css"
+           "css/jquery.loadmask.css" 
 	%}
 
-		<!-- "css/zp-menu.css" -->
+	{% include "_trackz_js_include.tpl" %}
 
-	<!--[if IE]>
-	{% lib	"css/zp-ie.css" %}
-	<![endif]-->
-	
-	<!-- Make ie understand html5 -->
-	{ % lib "js/apps/modernizr.js" % }
+        <!-- Le HTML5 shim, for IE6-8 support of HTML5 elements -->
+        <!--[if lt IE 9]>
+            <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
 
 	{% block html_head_extra %}{% endblock %}
 </head>
 
 <body class="{% block page_class %}{% endblock %}">
 
-	<section class="skip">
-		<a href="#content-area" title="Go directly to page content">Go to page content</a>
-	</section>
+    
+      {% block menu %}
+      <section>
+         <nav class="navbar navbar-fixed-top">
+              <div class="navbar-inner">
+                   <div class="container">
+                   {% menu id=id class="nav" %}
+                   </div>
+              </div>
+         </nav>
+      </section>
+      {% endblock %}
+    
+    <section class="container">
 
-	<section class="zp-wrapper">
-		<header class="clearfix">
-			{#
-			<figure id="logo" class="left">
-				<a href="/" title="Home"><img src="/lib/images/logo.jpg" alt="Zotonic &mdash; Simple stuff that works" /></a>
-			</figure>
-			#}
-			
-			<nav class="right">
-                          {% block menu %}
-				{% menu id=id class="list" %}
-                          {% endblock %}
-			</nav>
-		</header>
+        {% block content_area %}
+	   {% block main %}{% endblock %}
+	   {% block sidebar %}{% endblock %}
+	{% endblock %}
 
-		{% block banner %}{% endblock %}
-		
-		<section id="content-area" class="clear clearfix">
-		{% block content_area %}
-			{% block content %}{% endblock %}
-			{% block sidebar %}{% endblock %}
-		{% endblock %}
-		</section>
+        {% block subnavbar %}{% endblock %}
 
-		<div class="push"><!-- push down --></div>
-	</section>
-	
-	<footer>
-		{% include "_footer.tpl" %}
-	</footer>
+        <footer>
+            {% include "_footer.tpl" %}
+        </footer>
 
-	{% include "_trackz_js_include.tpl" %}
+    </section>
 
-	{% script %}
+    {% stream %}
+    {% script %}
 
 </body>
 </html>

@@ -3,7 +3,7 @@
 [
  {home, [], controller_page, [{template, {cat, "page.tpl"}}, {id, home}]},
  {dashboard, ["dashboard"], controller_template, [{template, "dashboard.tpl"}, {acl, is_auth}, {id, dashboard}]},
- {my_profile, ["my-profile"], controller_template, [{template, "my_profile.tpl"}, {acl, is_auth}, {id, my_profile}]},
+ {profile, ["profile"], controller_template, [{template, "profile.tpl"}, {acl, is_auth}, {id, profile}]},
 
  {person, ["user", id], controller_page, [{template, {cat, "page.tpl"}}]},
  {person, ["user", id, slug], controller_page, [{template, {cat, "page.tpl"}}]},

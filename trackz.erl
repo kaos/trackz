@@ -65,11 +65,17 @@ manage_schema(install, _Context) ->
            ],
        resources =
            [
+            {home, text, [{title, "Home"}, {page_path, "/"}, {body, "This is the trackz front-page."}]},
+            {dashboard, text, [{title, "Dashboard"}, {page_path, "/dashboard"}]},
+            {profile, text, [{title, "Profile"}, {page_path, "/profile"}]},
+            {logon, text, [{title, "Log in"}, {page_path, "/logon"}]},
+            {logoff, text, [{title, "Log out"}, {page_path, "/logoff"}]},
+
             {member_role, rbac_role, [{title, "Project Member Role"}]},
             {admin_role, rbac_role, [{title, "Project Admin Role"}]},
-            {view_op, rbac_operation, [{title, "view"}]},
-            {update_op, rbac_operation, [{title, "update"}]},
-            {delete_op, rbac_operation, [{title, "delete"}]}
+            {view_op, rbac_operation, [{title, "view"}, {operation, view}]},
+            {update_op, rbac_operation, [{title, "update"}, {operation, update}]},
+            {delete_op, rbac_operation, [{title, "delete"}, {operation, delete}]}
            ],
        edges =
            [
