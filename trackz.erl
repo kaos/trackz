@@ -130,26 +130,10 @@ event({submit, {add_card, Args}, _, _}, Context) ->
         Error ->
             z_render:growl_error(io_lib:format("Add card failed~n~p", [Error]), Context)
     end;
-event({submit, {create_project, Args}, _, _}, Context) ->
-    Title = z_context:get_q_validated("title", Context),
-    case m_rsc:insert(
-           [
-            {title, Title}, 
-            {category_id, m_category:name_to_id_check(project, Context)}
-           ], 
-           Context) 
-    of
-        {ok, Id} ->
-            ok = setup_project(Id, Context),
-            z_render:wire(
-              [
-               {Action, [{id, Id}|ActionArgs]} 
-               || {Action, ActionArgs} <- proplists:get_all_values(action, Args)
-              ],
-              Context);
-        Error ->
-            z_render:growl_error(io_lib:format("Create Project failed~n~p", [Error]), Context)
-    end.
+event(#postback{message={setup_project, Args}}, Context) ->
+    Id = proplists:get_value(id, Args),
+    ok = setup_project(Id, Context),
+    Context.
 
 %%--------------------------------------------------------------------
 observe_rsc_update_done(#rsc_update_done{ id=Card, 
@@ -250,9 +234,11 @@ filter_updated_props(Others) -> filter_inserted_props(Others).
 
 %%--------------------------------------------------------------------
 setup_project(Id, Context) ->
+    Translation = (m_rsc:p(Id, translation, Context))(z_context:language(Context)),
     case m_rsc:insert(
            [
-            {title, m_rsc:p(Id, title, Context) ++ " admin"}, 
+            {title, z_string:concat(Translation(title), " admin")}, 
+            {short_title, "Admin"},
             {category_id, m_category:name_to_id_check(rbac_role, Context)}
            ], 
            Context) 
@@ -264,7 +250,8 @@ setup_project(Id, Context) ->
     end,
     case m_rsc:insert(
            [
-            {title, m_rsc:p(Id, title, Context) ++ " member"}, 
+            {title, z_string:concat(Translation(title), " member")}, 
+            {short_title, "Member"},
             {category_id, m_category:name_to_id_check(rbac_role, Context)}
            ], 
            Context) 

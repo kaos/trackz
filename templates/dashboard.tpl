@@ -2,42 +2,48 @@
 
 {% block below_body %}
 
-{% with m.acl.user as id %}
-  <p>
-    <h3>
-      Your Projects
+    {% with m.acl.user as id %}
+        <p>
+            <h3>
+                Your Projects
 
-      {% button text=_"Create a new Project" 
-         class="btn btn-mini pull-right"
-         action={dialog_new_rsc
+                {% button text=_"Create a new Project"
+                    class="btn btn-mini pull-right"
+                    action={dialog_new_rsc
                         cat="project"
                         nocatselect=1
                         redirect=0
-                        action={with_args
-                                action={link
-                                        predicate="rbac_role_member"
-                                        object_id=id
-                                        element_id="projects"
-                                        edge_template="_project_list_entry.tpl"
-                                }
-                                arg={subject_id id}
+                        action={postback
+                            delegate="trackz"
+                            postback={setup_project id}
+                            inject_args
                         }
-         }
-      %}
-    </h3>
+                        action={insert_top
+                            target="projects"
+                            template="_project_list_entry.tpl"
+                        }
+                        action={hide target="no-projects-notice"}
+                    }
+                %}
 
-    <div>
-       <ul id="projects">
-           {% for p in id.s.project_member %}
-              {% include "_project_list_entry.tpl" id=p %}
-           {% empty %}
-              <div class="alert alert-info">
-                   You are not a member of any projects.
-              </div>
-           {% endfor %}
-       </ul>
-    </div>
-  </p>   
-{% endwith %}
+            </h3>
+
+            <div>
+                <ul id="projects">
+                    {% for p in id.o.rbac_role_member %}
+                        {% include "_project_list_entry.tpl"
+                            role=p
+                            id=p.s.rbac_domain_role|first
+                        %}
+                    {% empty %}
+                        <div id="no-projects-notice" class="alert alert-info">
+                            You are not a member of any projects.
+                        </div>
+                    {% endfor %}
+                </ul>
+            </div>
+        </p>
+
+    {% endwith %}
 
 {% endblock %}

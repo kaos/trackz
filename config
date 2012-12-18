@@ -6,7 +6,39 @@
  {dbdatabase, "zotonic"},
  {dbschema, "trackz"},
  {admin_password, "trackz"},
- {skeleton, empty},
- {modules, [mod_rbac, mod_base_site, mod_bootstrap, mod_geomap, mod_l10n]},
- {default_menu, [{home, []}, {profile, [{dashboard, []}, {logoff, []}]}]}
+ {install_menu, [{home, []}, {profile, [{dashboard, []}, {logoff, []}]}]},
+ {install_modules, 
+  [
+   mod_base,
+   mod_base_site,
+   mod_menu,
+   mod_oauth,
+   mod_search,
+   mod_oembed,
+   mod_atom_feed,
+   mod_translation,
+   mod_signal,
+   mod_logging,
+
+   mod_seo,
+   mod_seo_google,
+   mod_seo_sitemap,
+
+   mod_authentication,
+   mod_rbac,
+
+   mod_admin,
+   mod_admin_category,
+   mod_admin_config,
+   mod_admin_identity,
+   mod_admin_modules,
+   mod_admin_predicate,
+
+   mod_l10n,
+   mod_geomap,
+
+   mod_comment,
+   mod_bootstrap
+  ]
+ }
 ].
